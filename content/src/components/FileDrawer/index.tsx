@@ -39,7 +39,6 @@ export const FileDrawer = () => {
                             setVisible(true);
                         }
                     }
-                  console.log(`The ${mutation.attributeName} attribute was modified.`);
                 }
               }
         });
@@ -75,7 +74,6 @@ export const FileDrawer = () => {
             const payload = value.payload;
             const container = createContainer(payload.data.path)
             const divToAppend = fileItem.querySelector('a')?.lastElementChild;
-            console.log("===data==",{divToAppend, container: fileItem.querySelector('a') })
             divToAppend?.insertAdjacentElement('beforebegin', container)
             fileItem.style.position = 'relative';
             result.push({

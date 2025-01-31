@@ -16,11 +16,16 @@
 
 
   "action":{},
+  "background": {
+    "service_worker": "background/main.js",
+    "type": "module"
+  },
 
   "content_scripts": [
     {
       "matches": ["https://github.com/*"],
-      "js": [ "content/dist/ext/main.js"]
+      "js": [ "main.js", "content/dist/ext/main.js"],
+      "run_at": "document_end"
     }
   ]
 }

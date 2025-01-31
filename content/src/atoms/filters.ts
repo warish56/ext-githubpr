@@ -1,5 +1,4 @@
+import { FiltersData } from "@/types/common";
 import { atom } from "jotai";
 
-type state = Record<string|number, Record<string, boolean>>;
-
-export const filtersAtom = atom<state>({})
+export const filtersAtom = atom<FiltersData>({})

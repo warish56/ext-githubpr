@@ -1,32 +1,33 @@
 import { useFiltersAtom } from "@/hooks/useFiltersAtom"
 import { Button, Chip, IconButton, MenuItem, Stack, Typography } from "@mui/material"
 import ClearIcon from '@mui/icons-material/Clear';
-import { createStylesheet } from "@/utils/common";
 import { useRef } from "react";
+import { ListActions } from "./ListActions";
+import { useClipboard } from "@/hooks/useClipboard";
+import { useGlobalAtom } from "@/hooks/useGlobalAtom";
+import { appendStyleSheet, createStyles, getOrCreateStylesheet, getStylesheet } from "@/utils/styles";
+import { FiltersData } from "@/types/common";
 
 type props = {
     onCreate: () => void;
-    onBack: () => void;
-    onMilestoneChange: (milestone:string) => void;
-    currentMilestone: string;
-
+    onClose: () => void;
 }
 
 
-const stylesheetId = 'milestone_stylesheet'
 
-export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMilestone}:props) => {
-    const {milestones, filters} = useFiltersAtom();
-    const stylesheetRef = useRef<HTMLElement|null>();
+export const MilestoneList = ({onCreate, onClose}:props) => {
+    const {milestones, filters,removeMilestone, generateFiltersUrl } = useFiltersAtom();
+    const {globalData, setCurrentMileStones, clearSelectedMilestones, removeCurrentMileStones} = useGlobalAtom();
+    const {copyToClipboard} = useClipboard();
+    const stylesheetRef = useRef<HTMLElement|null>(getStylesheet());
 
 
-    const appendStyles = (style:string) => {
-        const stylesheet = document.getElementById(stylesheetId) ?? createStylesheet(stylesheetId);
-        stylesheet.innerHTML = style;
-
-        stylesheetRef.current = stylesheet;
-        if(!document.getElementById(stylesheetId)){
-            document.head.appendChild(stylesheet);
+    const setCssStyles = (filters: FiltersData, milestones:string[]) => {
+        const style = createStyles(filters, milestones);
+        const styleSheet = getOrCreateStylesheet(style);
+        stylesheetRef.current = styleSheet;
+        if(!getStylesheet()){
+            appendStyleSheet(styleSheet);
         }
     }
 
@@ -34,28 +35,51 @@ export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMiles
         if(stylesheetRef.current){
             stylesheetRef.current.innerHTML = '';
         }
-        onMilestoneChange('');
+        clearSelectedMilestones();
+        onClose();
     }
 
     const handleMileStoneFilter = (selectedMilestone:string) => {
-        onMilestoneChange(selectedMilestone);
+        if(globalData.selectedMilestones.includes(selectedMilestone)){
+            removeCurrentMileStones([selectedMilestone]);
+            setTimeout(clearStyles, 100)
+        }else{
+            setCurrentMileStones([selectedMilestone]);
+            setTimeout(() => {
+                setCssStyles(filters,[selectedMilestone])
+            }, 100)
 
-        const paths = filters[selectedMilestone];
-        const selectors:string[] = [];
-
-        Object.keys(paths).filter(path =>filters[selectedMilestone][path]).forEach((path) => {
-            selectors.push(`:not([data-file-path="${path}"])`)
-        })
-        
-
-        const style = `
-            [data-file-path]${selectors.join('')}{
-                display: none;
-            }
-        `
-
-        appendStyles(style);
+        }
+        onClose();
     }
+
+    const handleCopy = (milestone:string) => {
+        const url = generateFiltersUrl([milestone]);
+        copyToClipboard(url);
+    }
+
+    const handleClearStyles = () => {
+        onClose();
+        setTimeout(clearStyles, 100)
+    }
+
+
+    const onDataUpdate = (filters:FiltersData, milestone:string) => {
+        if(globalData.selectedMilestones.length === 0){
+            return;
+        }
+        setTimeout(() => {
+            setCssStyles(filters, [milestone]);
+        }, 100)
+    }
+
+
+    const handleDelete = (milestone:string) => {
+        removeMilestone(milestone, (d) => onDataUpdate(d, milestone))
+    }
+
+
+    const isViewMode = globalData.isViewMode;
 
     return (
         <Stack sx={{
@@ -74,8 +98,8 @@ export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMiles
                     marginLeft: 'auto',
                     gap: '10px'
                 }}>
-                    <Chip onClick={clearStyles} variant="outlined" size="small" label="Clear"/>
-                    <IconButton size="small" onClick={onBack} sx={{
+                    {(globalData.selectedMilestones.length > 0) && <Chip onClick={handleClearStyles} variant="outlined" size="small" label="Clear"/>}
+                    <IconButton size="small" onClick={onClose} sx={{
                         alignSelf: 'flex-start'
                     }}>
                         <ClearIcon />
@@ -88,10 +112,29 @@ export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMiles
             >
                 {milestones.length === 0 && <Typography>Empty Milestones!!</Typography>}
                 {milestones.map((milestone, idx) => {
-                    return <MenuItem selected={currentMilestone === milestone} onClick={() => handleMileStoneFilter(milestone)} key={`${milestone}_${idx}`}>{milestone}</MenuItem>
+                    return (
+                    <MenuItem  
+                    selected={globalData.selectedMilestones.includes(milestone)} 
+                    onClick={() => handleMileStoneFilter(milestone)} 
+                    key={`${milestone}_${idx}`}>
+                        <Stack direction="row" sx={{
+                            alignItems: 'center', 
+                            justifyContent: 'space-between', 
+                            width: '100%'
+                        }}>
+                            <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{`${milestone} (${Object.values(filters[milestone] ?? {}).length})`}</Typography>
+                            {!isViewMode &&
+                                <ListActions 
+                                onDelete={() => handleDelete(milestone)}
+                                onCopy={() => handleCopy(milestone)}
+                                />
+                            }
+                        </Stack>
+                    </MenuItem>
+                )
                 })}
             </Stack>
-            <Button onClick={onCreate} fullWidth size="small" variant="outlined">Create Milestone</Button>
+            {!isViewMode &&<Button onClick={onCreate} fullWidth size="small" variant="outlined">Create Milestone</Button>}
         </Stack>
     )
 }
