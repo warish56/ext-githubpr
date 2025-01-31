@@ -45,10 +45,9 @@ export const CreateMileStonePopover = () => {
                 <LocalOfferIcon sx={{
                     width: '15px',
                     height: '15px',
-                    color:"background.default"
                 }}/>
             }>
-                <Typography variant="body2" sx={{color: 'background.default', textTransform: 'capitalize'}}>{selectedMilestones.length > 0 ?  selectedMilestones.join(',') : 'Select Milestone'}</Typography>
+                <Typography variant="body2" sx={{ textTransform: 'capitalize'}}>{selectedMilestones.length > 0 ?  selectedMilestones.join(',') : 'Select Milestone'}</Typography>
             </Button>
         </Stack>
 

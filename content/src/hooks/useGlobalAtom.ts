@@ -10,6 +10,13 @@ export const useGlobalAtom = () => {
         setGlobalData((prev) => ({...prev, selectedMilestones:milestones}) )
     }
 
+    const removeCurrentMileStones = (milestones: string[]) => {
+        setGlobalData((prev) => ({
+            ...prev,
+            selectedMilestones: prev.selectedMilestones.filter((milestone) => !milestones.includes(milestone))
+        }) )
+    }
+
     const clearSelectedMilestones = () => {
         setGlobalData((prev) => ({...prev, selectedMilestones:[]}) )
     }
@@ -22,6 +29,7 @@ export const useGlobalAtom = () => {
         globalData,
         setViewMode,
         setCurrentMileStones,
+        removeCurrentMileStones,
         clearSelectedMilestones
     }
 

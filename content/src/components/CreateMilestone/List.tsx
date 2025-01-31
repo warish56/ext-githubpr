@@ -6,6 +6,7 @@ import { ListActions } from "./ListActions";
 import { useClipboard } from "@/hooks/useClipboard";
 import { useGlobalAtom } from "@/hooks/useGlobalAtom";
 import { appendStyleSheet, createStyles, getOrCreateStylesheet, getStylesheet } from "@/utils/styles";
+import { FiltersData } from "@/types/common";
 
 type props = {
     onCreate: () => void;
@@ -16,12 +17,12 @@ type props = {
 
 export const MilestoneList = ({onCreate, onClose}:props) => {
     const {milestones, filters,removeMilestone, generateFiltersUrl } = useFiltersAtom();
-    const {globalData, setCurrentMileStones, clearSelectedMilestones} = useGlobalAtom();
+    const {globalData, setCurrentMileStones, clearSelectedMilestones, removeCurrentMileStones} = useGlobalAtom();
     const {copyToClipboard} = useClipboard();
     const stylesheetRef = useRef<HTMLElement|null>(getStylesheet());
 
 
-    const setCssStyles = (milestones:string[]) => {
+    const setCssStyles = (filters: FiltersData, milestones:string[]) => {
         const style = createStyles(filters, milestones);
         const styleSheet = getOrCreateStylesheet(style);
         stylesheetRef.current = styleSheet;
@@ -35,17 +36,46 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
             stylesheetRef.current.innerHTML = '';
         }
         clearSelectedMilestones();
-    }
-
-    const handleMileStoneFilter = (selectedMilestone:string) => {
-        setCurrentMileStones([selectedMilestone]);
-        setCssStyles([selectedMilestone])
         onClose();
     }
 
-    const handleCopy = () => {
-        const url = generateFiltersUrl(globalData.selectedMilestones);
+    const handleMileStoneFilter = (selectedMilestone:string) => {
+        if(globalData.selectedMilestones.includes(selectedMilestone)){
+            removeCurrentMileStones([selectedMilestone]);
+            setTimeout(clearStyles, 100)
+        }else{
+            setCurrentMileStones([selectedMilestone]);
+            setTimeout(() => {
+                setCssStyles(filters,[selectedMilestone])
+            }, 100)
+
+        }
+        onClose();
+    }
+
+    const handleCopy = (milestone:string) => {
+        const url = generateFiltersUrl([milestone]);
         copyToClipboard(url);
+    }
+
+    const handleClearStyles = () => {
+        onClose();
+        setTimeout(clearStyles, 100)
+    }
+
+
+    const onDataUpdate = (filters:FiltersData, milestone:string) => {
+        if(globalData.selectedMilestones.length === 0){
+            return;
+        }
+        setTimeout(() => {
+            setCssStyles(filters, [milestone]);
+        }, 100)
+    }
+
+
+    const handleDelete = (milestone:string) => {
+        removeMilestone(milestone, (d) => onDataUpdate(d, milestone))
     }
 
 
@@ -68,7 +98,7 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
                     marginLeft: 'auto',
                     gap: '10px'
                 }}>
-                    <Chip onClick={clearStyles} variant="outlined" size="small" label="Clear"/>
+                    {(globalData.selectedMilestones.length > 0) && <Chip onClick={handleClearStyles} variant="outlined" size="small" label="Clear"/>}
                     <IconButton size="small" onClick={onClose} sx={{
                         alignSelf: 'flex-start'
                     }}>
@@ -92,11 +122,11 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
                             justifyContent: 'space-between', 
                             width: '100%'
                         }}>
-                            <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{milestone}</Typography>
+                            <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{`${milestone} (${Object.values(filters[milestone] ?? {}).length})`}</Typography>
                             {!isViewMode &&
                                 <ListActions 
-                                onDelete={() => removeMilestone(milestone)}
-                                onCopy={handleCopy}
+                                onDelete={() => handleDelete(milestone)}
+                                onCopy={() => handleCopy(milestone)}
                                 />
                             }
                         </Stack>

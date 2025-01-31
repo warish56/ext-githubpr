@@ -1,34 +1,31 @@
 import { createTheme } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
 
 declare module '@mui/material/styles' {
-
     interface TypeBackground {
         dark: string;
     }
 
-    interface TypeText{
-        dark:string;
+    interface TypeText {
+        dark: string;
         link: string;
         default: string;
     }
 
-    interface ZIndex{
-        popper:number;
+    interface ZIndex {
+        popper: number;
     }
 
     interface Palette {
-      gray: {
-        100: string;
-        200: string;
-        300: string;
-        400: string;
-        500: string;
-        600: string;
-        700: string;
-      };
+        gray: {
+            100: string;
+            200: string;
+            300: string;
+            400: string;
+            500: string;
+            600: string;
+            700: string;
+        };
     }
-
 
     interface PaletteOptions {
         gray: {
@@ -39,149 +36,223 @@ declare module '@mui/material/styles' {
             500: string;
             600: string;
             700: string;
-          }
+        }
     }
 
-    interface ZIndexOptions{
+    interface ZIndexOptions {
         popper: number;
     }
-  
-  }
+}
 
-// Custom color palette based on #7E60BF
-const palette = {
-  primary: {
-    main: '#7E60BF', // base purple
-    light: '#9D85CF', // lighter shade
-    dark: '#5F449B', // darker shade
-    contrastText: '#FFFFFF',
-  },
-  secondary: {
-    main: '#B4A1DB', // softer purple
-    light: '#D1C5EA', // very light purple
-    dark: '#8E74C4', // medium purple
-    contrastText: '#FFFFFF',
-  },
-  background: {
-    default: '#FFFFFF',
-    paper: '#FBFAFF', // slight purple tint
-    dark: grey[900]
-  },
-  text: {
-    primary: '#2D2440', // dark purple-gray
-    secondary: '#6B6684', // medium purple-gray
-    dark: grey[50],
-    default: '#2d2440',
-    link: "#2196f3",
-  },
-  action: {
-    hover: '#F4F1FA', // very light purple
-    selected: '#EAE4F5', // light purple
-    disabled: '#ABA7B7', // muted purple-gray
-  },
-  divider: '#E8E5EF', // light purple-gray
-  gray: {
-    100: '#F7F7F7',
-    200: '#E6E6E6', 
-    300: '#D4D4D4',
-    400: '#A3A3A3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040'
-  }
+// Common palette values
+const commonPalette = {
+    zIndex: {
+        popper: 100000,
+    },
+    shape: {
+        borderRadius: 6,
+    },
 };
 
-export const AppTheme = createTheme({
-  palette,
-  zIndex: {
-    popper: 100000,
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  typography: {
-    fontFamily: '"Roboto", system-ui, -apple-system, sans-serif',
-    h1: {
-      fontSize: '19.5px', //'1.5rem',
-      fontWeight: 600,
+// Light theme palette
+const lightPalette = {
+    mode: 'light',
+    primary: {
+        main: '#2DA44E', // GitHub's green
+        light: '#46954A',
+        dark: '#1F883D',
+        contrastText: '#FFFFFF',
     },
-    h2: {
-      fontSize: '16.25px', //'1.25rem',
-      fontWeight: 600,
+    secondary: {
+        main: '#0969DA', // GitHub's blue
+        light: '#218BFF',
+        dark: '#0550AE',
+        contrastText: '#FFFFFF',
     },
-    h3: {
-      fontSize: '14.625px', //'1.125rem',
-      fontWeight: 500,
+    background: {
+        default: '#FFFFFF',
+        paper: '#F6F8FA', // GitHub's subtle gray background
+        dark: '#1C2128'
     },
-    body1: {
-      fontSize: '13px', //'1rem',
-      lineHeight: 1.8,
+    text: {
+        primary: '#1F2328', // GitHub's primary text
+        secondary: '#656D76', // GitHub's secondary text
+        dark: '#E6EDF3',
+        default: '#1F2328',
+        link: "#0969DA",
     },
-    body2: {
-        fontSize: '11.7px', //'0.9rem',
-        lineHeight: 1.7,
+    action: {
+        hover: '#F3F4F6',
+        selected: '#E9EEF2',
+        disabled: '#8C959F',
     },
-    caption: {
-      fontSize: '11.375px', //'0.875rem',
-      lineHeight: 1.7,
+    divider: '#D0D7DE',
+    gray: {
+        100: '#F6F8FA',
+        200: '#E9EEF2',
+        300: '#D0D7DE',
+        400: '#8C959F',
+        500: '#656D76',
+        600: '#424A53',
+        700: '#1F2328'
+    }
+};
+
+// Dark theme palette
+const darkPalette = {
+    mode: 'dark',
+    primary: {
+        main: '#3FB950', // GitHub's dark mode green
+        light: '#46954A',
+        dark: '#238636',
+        contrastText: '#FFFFFF',
     },
-  },
-  components: {
+    secondary: {
+        main: '#58A6FF', // GitHub's dark mode blue
+        light: '#79C0FF',
+        dark: '#1F6FEB',
+        contrastText: '#FFFFFF',
+    },
+    background: {
+        default: '#0D1117', // GitHub's dark mode background
+        paper: '#161B22', // GitHub's dark mode elevated background
+        dark: '#010409'
+    },
+    text: {
+        primary: '#E6EDF3', // GitHub's dark mode primary text
+        secondary: '#7D8590', // GitHub's dark mode secondary text
+        dark: '#E6EDF3',
+        default: '#E6EDF3',
+        link: "#58A6FF", // GitHub's dark mode link blue
+    },
+    action: {
+        hover: '#21262D', // GitHub's dark mode hover state
+        selected: '#30363D', // GitHub's dark mode selected state
+        disabled: '#484F58', // GitHub's dark mode disabled state
+    },
+    divider: '#30363D', // GitHub's dark mode border color
+    gray: {
+        100: '#161B22',
+        200: '#21262D',
+        300: '#30363D',
+        400: '#484F58',
+        500: '#7D8590',
+        600: '#C9D1D9',
+        700: '#E6EDF3'
+    }
+};
+
+// Common component overrides
+const components = {
     MuiIconButton: {
-      styleOverrides: {
-        root: {
-          minWidth:0,
-          width:'auto',
-          '&:hover':{
-            border: 'none',
-            color: 'inherit'
-          }
-        }
-      }
-    },
-    MuiButton:{
-      styleOverrides:{
-        root:{
-          width:'auto',
-          variants:[
-            {
-              props: { variant: 'contained' },
-              style: {
-                '&:hover':{
-                  color: `var(--variant-containedColor)`,
-                  backgroundColor: `var(--variant-containedBg)`,
+        styleOverrides: {
+            root: {
+                minWidth: 0,
+                width: 'auto',
+                '&:hover': {
+                    border: 'none',
+                    color: 'inherit'
                 }
-              },
-            },
-
-            {
-              props: { variant: 'outlined' },
-              style: {
-                '&:hover':{
-                  border: '1px solid currentColor'
-                },
-              },
-            },
-
-          ],
-          '&:hover':{
-                  border: 'none'
-          },
-          minWidth:0,
+            }
         }
-      }
     },
-    MuiTooltip:{
-        styleOverrides:{
-            tooltip:({theme}) => ({
-                '&':{
+    MuiButton: {
+        styleOverrides: {
+            root: {
+                width: 'auto',
+                textTransform: 'none',
+                fontWeight: 600,
+                variants: [
+                    {
+                        props: { variant: 'contained' },
+                        style: {
+                            '&:hover': {
+                                color: `var(--variant-containedColor)`,
+                                backgroundColor: `var(--variant-containedBg)`,
+                            }
+                        },
+                    },
+                    {
+                        props: { variant: 'outlined' },
+                        style: {
+                            '&:hover': {
+                                border: '1px solid currentColor'
+                            },
+                        },
+                    },
+                ],
+                '&:hover': {
+                    border: 'none'
+                },
+                minWidth: 0,
+            }
+        }
+    },
+    MuiTooltip: {
+        styleOverrides: {
+            tooltip: ({ theme }) => ({
+                '&': {
                     backgroundColor: theme.palette.background.dark,
                     color: theme.palette.text.dark,
                     ...theme.typography.body2,
                     padding: '8px',
-                }   
+                }
+            })
+        }
+    },
+    // Dark mode specific overrides
+    MuiPaper: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                backgroundImage: 'none', // Remove default paper elevation in dark mode
+                ...(theme.palette.mode === 'dark' && {
+                    boxShadow: '0 0 0 1px #30363D', // GitHub-style border in dark mode
+                })
             })
         }
     }
-  }
+};
+
+// Common typography settings
+const typography = {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif',
+    h1: {
+        fontSize: '20px',
+        fontWeight: 600,
+    },
+    h2: {
+        fontSize: '16px',
+        fontWeight: 600,
+    },
+    h3: {
+        fontSize: '14px',
+        fontWeight: 600,
+    },
+    body1: {
+        fontSize: '14px',
+        lineHeight: 1.5,
+    },
+    body2: {
+        fontSize: '12px',
+        lineHeight: 1.5,
+    },
+    caption: {
+        fontSize: '12px',
+        lineHeight: 1.5,
+    },
+};
+
+// Create themes
+export const lightTheme = createTheme({
+    ...commonPalette,
+    palette: lightPalette,
+    typography,
+    components,
+});
+
+export const darkTheme = createTheme({
+    ...commonPalette,
+    palette: darkPalette,
+    typography,
+    components,
 });

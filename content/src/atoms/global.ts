@@ -5,7 +5,9 @@ type state = {
     selectedMilestones: string[];
 }
 
+
+
 export const globalAtom = atom<state>({
     isViewMode: false,
-    selectedMilestones: []
+    selectedMilestones: [],
 })

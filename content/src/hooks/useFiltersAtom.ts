@@ -1,10 +1,24 @@
 import { filtersAtom } from "@/atoms/filters";
 import { QueryFilterSuffix } from "@/constants";
-import { useAtom } from "jotai"
+import { saveFiltersToDb } from "@/services/worker";
+import { useAtomValue, useSetAtom } from "jotai"
+import { useEffect } from "react";
+import { getCurrentPrId } from "@/utils/common";
+import { useGlobalAtom } from "./useGlobalAtom";
+import { FiltersData } from "@/types/common";
 
 
 export const useFiltersAtom = () => {
-    const [filters, updateFilters] = useAtom(filtersAtom);
+    const filters = useAtomValue(filtersAtom)
+    const updateFilters = useSetAtom(filtersAtom);
+    const {globalData} = useGlobalAtom()
+
+
+    useEffect(() => {
+        if(Object.keys(filters).length > 0 && !globalData.isViewMode){
+            saveFiltersToDb(getCurrentPrId(), filters)
+        }
+    }, [filters, globalData])
 
     const initializeFilters = (mapping:Record<string, Record<string, boolean>>) => {
         updateFilters(mapping)
@@ -17,31 +31,47 @@ export const useFiltersAtom = () => {
         }))
     }
 
-    const removeMilestone = (key:string) => {
+    const removeMilestone = (key:string, callback?: (data: FiltersData)=> void) => {
         updateFilters((prev) => {
             const newData = {...prev};
             Reflect.deleteProperty(newData, key);
+            callback?.(newData)
             return newData
         })
     }
 
 
-    const addFileToMilestone = (mileStone:string,filePath:string) => {
+    const addFileToMilestone = (mileStone:string,filePath:string, callback?: (data: FiltersData)=> void) => {
         updateFilters((prev) => {
-
             const oldData = {...prev};
             Object.values(oldData).forEach(records => {
                 delete records[filePath];
             })
-
-            return {
+            const newData = {
                 ...oldData,
                 [mileStone]: {
                     ...oldData[mileStone], 
                     [filePath]: true
                 }
             }
+            callback?.(newData)
+            return newData;
 
+        })
+    } 
+
+    const removeFileFromMilestone = (mileStone:string,filePath:string, callback?: (data: FiltersData)=> void) => {
+        updateFilters((prev) => {
+            const oldData = {...prev};
+            const newData =  {
+                ...oldData,
+                [mileStone]: {
+                    ...oldData[mileStone], 
+                    [filePath]: false
+                }
+            }
+            callback?.(newData);
+            return newData;
         })
     } 
 
@@ -57,6 +87,7 @@ export const useFiltersAtom = () => {
         searchParams.append('view','1')
         return currentUrl.href;
     }
+    
 
 
     return {
@@ -66,6 +97,7 @@ export const useFiltersAtom = () => {
         createMilestone,
         removeMilestone,
         addFileToMilestone,
+        removeFileFromMilestone,
         generateFiltersUrl
     }
 

@@ -1,4 +1,4 @@
-import { Box, IconButton, Popover, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { useState } from "react"
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { MilestonesSelect } from "../Inputs/MilestonesSelect";
@@ -36,20 +36,26 @@ export const SelectMileStonePopover = ({filePath}:props) => {
 
         <Stack direction="row" sx={{
             alignItems: 'center',
-            gap: '5px'
+            gap: '5px',
+            minHeight: '31px'
         }}>
            {!globalData.isViewMode &&
-                <IconButton onClick={handleClick}>
-                    <LocalOfferIcon 
-                    sx={{
+                <Button 
+                onClick={handleClick}
+                disabled={Object.keys(filters).length === 0}
+                variant="text" 
+                sx={{
+                    color: 'currentcolor'
+                }}
+                startIcon={ 
+                    <LocalOfferIcon sx={{
                         width: '15px',
                         height: '15px',
-                        color:"background.default"
-                    }}
-                    />
-                </IconButton>
+                    }}/>
+                }>
+                    {currentMileStone && <Typography variant="caption" sx={{textTransform: 'capitalize'}}>{currentMileStone}</Typography>   }             
+                </Button>
             }
-             <Typography variant="caption" sx={{color: 'background.default', textTransform: 'capitalize'}}>{currentMileStone}</Typography>
         </Stack>
 
         <Popover
@@ -64,10 +70,11 @@ export const SelectMileStonePopover = ({filePath}:props) => {
         >
             <Stack sx={{
                 width: '100px',
-                height: '150px',
-                overflow: 'auto'
+                maxHeight: '150px',
+                overflow: 'auto',
+                padding: '10px'
             }}>
-                <MilestonesSelect onClose={handleClose} filePath={filePath}/>
+                <MilestonesSelect currentMilestone={currentMileStone} onClose={handleClose} filePath={filePath}/>
             </Stack>
         </Popover>
         </Box>
