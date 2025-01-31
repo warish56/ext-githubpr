@@ -1,4 +1,5 @@
 import { filtersAtom } from "@/atoms/filters";
+import { QueryFilterSuffix } from "@/constants";
 import { useAtom } from "jotai"
 
 
@@ -15,6 +16,15 @@ export const useFiltersAtom = () => {
             [key]: {}
         }))
     }
+
+    const removeMilestone = (key:string) => {
+        updateFilters((prev) => {
+            const newData = {...prev};
+            Reflect.deleteProperty(newData, key);
+            return newData
+        })
+    }
+
 
     const addFileToMilestone = (mileStone:string,filePath:string) => {
         updateFilters((prev) => {
@@ -35,13 +45,28 @@ export const useFiltersAtom = () => {
         })
     } 
 
+    const generateFiltersUrl = (selectedMilestones: string[]) => {
+        const currentUrl = new URL(window.location.href);
+        const searchParams = currentUrl.searchParams;
+        selectedMilestones.forEach((milestone) => {
+            const paths = Object.keys(filters[milestone]).filter(key => filters[milestone][key]);
+            paths.forEach((path) => {
+                searchParams.append(`${milestone}${QueryFilterSuffix}`, encodeURIComponent(path)) 
+            })
+        })
+        searchParams.append('view','1')
+        return currentUrl.href;
+    }
+
 
     return {
         filters,
         milestones: Object.keys(filters),
         initializeFilters,
         createMilestone,
-        addFileToMilestone
+        removeMilestone,
+        addFileToMilestone,
+        generateFiltersUrl
     }
 
 }

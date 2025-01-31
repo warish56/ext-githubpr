@@ -3,16 +3,19 @@ import { useState } from "react"
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { MilestonesSelect } from "../Inputs/MilestonesSelect";
 import { useFiltersAtom } from "@/hooks/useFiltersAtom";
+import { useGlobalAtom } from "@/hooks/useGlobalAtom";
 
 type props = {
     filePath: string;
 }
 export const SelectMileStonePopover = ({filePath}:props) => {
     const {filters} = useFiltersAtom();
+    const {globalData} = useGlobalAtom();
 
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();  
         event.stopPropagation();
         setAnchorEl(event.currentTarget);
     };
@@ -35,14 +38,18 @@ export const SelectMileStonePopover = ({filePath}:props) => {
             alignItems: 'center',
             gap: '5px'
         }}>
-            <IconButton onClick={handleClick}>
-                <LocalOfferIcon sx={{
-                    width: '15px',
-                    height: '15px',
-                    color:"background.default"
-                    }}/>
-            </IconButton>
-             <Typography variant="caption" sx={{color: 'background.default'}}>{currentMileStone}</Typography>
+           {!globalData.isViewMode &&
+                <IconButton onClick={handleClick}>
+                    <LocalOfferIcon 
+                    sx={{
+                        width: '15px',
+                        height: '15px',
+                        color:"background.default"
+                    }}
+                    />
+                </IconButton>
+            }
+             <Typography variant="caption" sx={{color: 'background.default', textTransform: 'capitalize'}}>{currentMileStone}</Typography>
         </Stack>
 
         <Popover

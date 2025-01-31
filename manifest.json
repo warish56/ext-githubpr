@@ -20,7 +20,8 @@
   "content_scripts": [
     {
       "matches": ["https://github.com/*"],
-      "js": [ "content/dist/ext/main.js"]
+      "js": [ "main.js", "content/dist/ext/main.js"],
+      "run_at": "document_end"
     }
   ]
 }

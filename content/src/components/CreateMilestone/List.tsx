@@ -1,32 +1,32 @@
 import { useFiltersAtom } from "@/hooks/useFiltersAtom"
 import { Button, Chip, IconButton, MenuItem, Stack, Typography } from "@mui/material"
 import ClearIcon from '@mui/icons-material/Clear';
-import { createStylesheet } from "@/utils/common";
 import { useRef } from "react";
+import { ListActions } from "./ListActions";
+import { useClipboard } from "@/hooks/useClipboard";
+import { useGlobalAtom } from "@/hooks/useGlobalAtom";
+import { appendStyleSheet, createStyles, getOrCreateStylesheet, getStylesheet } from "@/utils/styles";
 
 type props = {
     onCreate: () => void;
-    onBack: () => void;
-    onMilestoneChange: (milestone:string) => void;
-    currentMilestone: string;
-
+    onClose: () => void;
 }
 
 
-const stylesheetId = 'milestone_stylesheet'
 
-export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMilestone}:props) => {
-    const {milestones, filters} = useFiltersAtom();
-    const stylesheetRef = useRef<HTMLElement|null>();
+export const MilestoneList = ({onCreate, onClose}:props) => {
+    const {milestones, filters,removeMilestone, generateFiltersUrl } = useFiltersAtom();
+    const {globalData, setCurrentMileStones, clearSelectedMilestones} = useGlobalAtom();
+    const {copyToClipboard} = useClipboard();
+    const stylesheetRef = useRef<HTMLElement|null>(getStylesheet());
 
 
-    const appendStyles = (style:string) => {
-        const stylesheet = document.getElementById(stylesheetId) ?? createStylesheet(stylesheetId);
-        stylesheet.innerHTML = style;
-
-        stylesheetRef.current = stylesheet;
-        if(!document.getElementById(stylesheetId)){
-            document.head.appendChild(stylesheet);
+    const setCssStyles = (milestones:string[]) => {
+        const style = createStyles(filters, milestones);
+        const styleSheet = getOrCreateStylesheet(style);
+        stylesheetRef.current = styleSheet;
+        if(!getStylesheet()){
+            appendStyleSheet(styleSheet);
         }
     }
 
@@ -34,28 +34,22 @@ export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMiles
         if(stylesheetRef.current){
             stylesheetRef.current.innerHTML = '';
         }
-        onMilestoneChange('');
+        clearSelectedMilestones();
     }
 
     const handleMileStoneFilter = (selectedMilestone:string) => {
-        onMilestoneChange(selectedMilestone);
-
-        const paths = filters[selectedMilestone];
-        const selectors:string[] = [];
-
-        Object.keys(paths).filter(path =>filters[selectedMilestone][path]).forEach((path) => {
-            selectors.push(`:not([data-file-path="${path}"])`)
-        })
-        
-
-        const style = `
-            [data-file-path]${selectors.join('')}{
-                display: none;
-            }
-        `
-
-        appendStyles(style);
+        setCurrentMileStones([selectedMilestone]);
+        setCssStyles([selectedMilestone])
+        onClose();
     }
+
+    const handleCopy = () => {
+        const url = generateFiltersUrl(globalData.selectedMilestones);
+        copyToClipboard(url);
+    }
+
+
+    const isViewMode = globalData.isViewMode;
 
     return (
         <Stack sx={{
@@ -75,7 +69,7 @@ export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMiles
                     gap: '10px'
                 }}>
                     <Chip onClick={clearStyles} variant="outlined" size="small" label="Clear"/>
-                    <IconButton size="small" onClick={onBack} sx={{
+                    <IconButton size="small" onClick={onClose} sx={{
                         alignSelf: 'flex-start'
                     }}>
                         <ClearIcon />
@@ -88,10 +82,29 @@ export const MilestoneList = ({onCreate, onBack, onMilestoneChange, currentMiles
             >
                 {milestones.length === 0 && <Typography>Empty Milestones!!</Typography>}
                 {milestones.map((milestone, idx) => {
-                    return <MenuItem selected={currentMilestone === milestone} onClick={() => handleMileStoneFilter(milestone)} key={`${milestone}_${idx}`}>{milestone}</MenuItem>
+                    return (
+                    <MenuItem  
+                    selected={globalData.selectedMilestones.includes(milestone)} 
+                    onClick={() => handleMileStoneFilter(milestone)} 
+                    key={`${milestone}_${idx}`}>
+                        <Stack direction="row" sx={{
+                            alignItems: 'center', 
+                            justifyContent: 'space-between', 
+                            width: '100%'
+                        }}>
+                            <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{milestone}</Typography>
+                            {!isViewMode &&
+                                <ListActions 
+                                onDelete={() => removeMilestone(milestone)}
+                                onCopy={handleCopy}
+                                />
+                            }
+                        </Stack>
+                    </MenuItem>
+                )
                 })}
             </Stack>
-            <Button onClick={onCreate} fullWidth size="small" variant="outlined">Create Milestone</Button>
+            {!isViewMode &&<Button onClick={onCreate} fullWidth size="small" variant="outlined">Create Milestone</Button>}
         </Stack>
     )
 }

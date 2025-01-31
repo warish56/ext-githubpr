@@ -6,10 +6,3 @@ export const generateRandomId = () => {
     }
     return id;
 };
-
-
-export const createStylesheet = (id:string) => {
-    const stylesheet = document.createElement('style');
-    stylesheet.id = id;
-    return stylesheet;
-}

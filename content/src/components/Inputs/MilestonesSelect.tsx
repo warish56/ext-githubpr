@@ -1,5 +1,5 @@
 import { useFiltersAtom } from "@/hooks/useFiltersAtom"
-import { MenuItem } from "@mui/material"
+import { MenuItem, Typography } from "@mui/material"
 
 type props = {
     filePath: string;
@@ -18,7 +18,14 @@ export const MilestonesSelect = ({
         onClose();
     };
     return milestones.map((milestone, idx) => {
-        return <MenuItem onClick={() => handleSelect(milestone)} key={`${milestone}_${idx}`} value={milestone}>{milestone}</MenuItem>
+        return (
+        <MenuItem 
+        onClick={() => handleSelect(milestone)} 
+        key={`${milestone}_${idx}`}
+        value={milestone}
+        >
+         <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{milestone}</Typography>
+        </MenuItem>)
     })
         
 }

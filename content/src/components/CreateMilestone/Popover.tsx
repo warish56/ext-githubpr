@@ -1,21 +1,17 @@
-import { Box, IconButton, Popover, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { useState } from "react"
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { MilestoneList } from "./List";
 import { Form } from "./Form";
+import { useGlobalAtom } from "@/hooks/useGlobalAtom";
 
 
 
 export const CreateMileStonePopover = () => {
-    const [currentMilestone, setCurrentMilestone] = useState('');
+    const {globalData} = useGlobalAtom();
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [currentView, setCurrentView] = useState<'list'|'form'>('list');
 
-
-
-    const handleMilestoneChange = (milestone: string) => {
-        setCurrentMilestone(milestone);
-    }
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -34,6 +30,7 @@ export const CreateMileStonePopover = () => {
     }
 
     const open = Boolean(anchorEl);
+    const selectedMilestones = globalData.selectedMilestones;
 
     return (
         <Box>
@@ -41,14 +38,18 @@ export const CreateMileStonePopover = () => {
             gap: '10px',
             alignItems: 'center'
         }}>
-            <IconButton onClick={handleClick}>
+            <Button 
+            onClick={handleClick}
+            variant="text" 
+            startIcon={ 
                 <LocalOfferIcon sx={{
                     width: '15px',
                     height: '15px',
                     color:"background.default"
                 }}/>
-            </IconButton>
-            <Typography variant="body2" sx={{color: 'background.default'}}>{currentMilestone}</Typography>
+            }>
+                <Typography variant="body2" sx={{color: 'background.default', textTransform: 'capitalize'}}>{selectedMilestones.length > 0 ?  selectedMilestones.join(',') : 'Select Milestone'}</Typography>
+            </Button>
         </Stack>
 
         <Popover
@@ -64,7 +65,7 @@ export const CreateMileStonePopover = () => {
             <Stack sx={{
                 width: '232px'
             }}>
-                {currentView === 'list' ? <MilestoneList currentMilestone={currentMilestone} onMilestoneChange={handleMilestoneChange} onBack={handleClose}  onCreate={handleCreate}/> : <Form onBack={handleBack} />}
+                {currentView === 'list' ? <MilestoneList onClose={handleClose}  onCreate={handleCreate}/> : <Form onBack={handleBack} />}
             </Stack>
         </Popover>
         </Box>
