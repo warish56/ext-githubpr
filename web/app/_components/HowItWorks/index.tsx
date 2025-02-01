@@ -1,22 +1,13 @@
 'use client'
 
 import React from 'react';
-import { Box, Typography, Grid, Container, keyframes, useTheme, Stack } from '@mui/material';
+import { Box, Typography, Container, keyframes, useTheme, Stack } from '@mui/material';
 import {
     FilterList as FilterIcon,
     Share as ShareIcon,
     Visibility as VisibilityIcon,
-    Code as CodeIcon,
-    Timeline as TimelineIcon,
-    GroupWork as GroupWorkIcon,
 } from '@mui/icons-material';
 
-// Animation keyframes
-const float = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-`;
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }

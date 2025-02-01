@@ -41,19 +41,19 @@ const TermsAndConditionsPage = () => {
                 <Typography variant="body1" sx={{ mb: 4, color: 'text.secondary' }}>
                     <ul>
                         <li>
-                            <strong>"Extension"</strong> refers to the GitHub Milestones browser extension available on the Chrome Web Store.
+                            <strong>&quot;Extension&quot;</strong> refers to the GitHub Milestones browser extension available on the Chrome Web Store.
                         </li>
                         <li>
-                            <strong>"User"</strong> refers to anyone who installs or uses the Extension.
+                            <strong>&quot;User&quot;</strong> refers to anyone who installs or uses the Extension.
                         </li>
                         <li>
-                            <strong>"GitHub"</strong> refers to the GitHub platform and its services.
+                            <strong>&quot;GitHub&quot;</strong> refers to the GitHub platform and its services.
                         </li>
                         <li>
-                            <strong>"Milestones"</strong> refers to the labels and categorizations created using our Extension.
+                            <strong>&quot;Milestones&quot;</strong> refers to the labels and categorizations created using our Extension.
                         </li>
                         <li>
-                            <strong>"Chrome Web Store"</strong> refers to Google's official distribution platform for Chrome extensions.
+                            <strong>&quot;Chrome Web Store&quot;</strong> refers to Google&apos;s official distribution platform for Chrome extensions.
                         </li>
                     </ul>
                 </Typography>
@@ -89,8 +89,8 @@ const TermsAndConditionsPage = () => {
                 <Typography variant="body1" sx={{ mb: 4, color: 'text.secondary' }}>
                     When using GitHub Milestones, you agree to:
                     <ul>
-                        <li>Use the Extension in compliance with GitHub's terms of service</li>
-                        <li>Comply with Chrome Web Store's terms of service</li>
+                        <li>Use the Extension in compliance with GitHub&apos;s terms of service</li>
+                        <li>Comply with Chrome Web Store&apos;s terms of service</li>
                         <li>Not attempt to modify, reverse engineer, or manipulate the Extension</li>
                         <li>Not use the Extension for any illegal or unauthorized purpose</li>
                         <li>Not interfere with the proper working of the Extension</li>
@@ -158,7 +158,7 @@ const TermsAndConditionsPage = () => {
                     7. Disclaimer
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 4, color: 'text.secondary' }}>
-                    GitHub Milestones is provided "as is" without any warranties. As a free service, we do not guarantee that the Extension will meet your specific requirements or be completely error-free. We are not responsible for any issues arising from your use of the Extension.
+                    GitHub Milestones is provided &quot;as is&quot; without any warranties. As a free service, we do not guarantee that the Extension will meet your specific requirements or be completely error-free. We are not responsible for any issues arising from your use of the Extension.
                 </Typography>
 
                 {/* Limitation of Liability */}
