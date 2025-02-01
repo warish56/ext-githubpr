@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "watch-ext": "vite build --watch",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "watch-ext": "vite build --watch",
+    "build-ext": "export NODE_ENV=production && vite build --mode production",
+    "create-ext": "yarn build-ext && bash ./scripts/createExtension.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
