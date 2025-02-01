@@ -1,4 +1,5 @@
 import { globalAtom } from "@/atoms/global";
+import { GlobalData } from "@/types/common";
 import { useAtom } from "jotai"
 
 
@@ -10,11 +11,27 @@ export const useGlobalAtom = () => {
         setGlobalData((prev) => ({...prev, selectedMilestones:milestones}) )
     }
 
-    const removeCurrentMileStones = (milestones: string[]) => {
-        setGlobalData((prev) => ({
+    const addToCurrentMileStone = (milestone: string) => {
+        let data:(GlobalData | undefined); 
+        setGlobalData((prev) => {
+            const newGlobalData = {...prev, selectedMilestones:[...prev.selectedMilestones , milestone]};
+            data = newGlobalData;
+            return newGlobalData
+        })
+        return data;
+    }
+
+    const removeCurrentSelectedMileStones = (milestones: string[]) => {
+        let data:(GlobalData | undefined); 
+        setGlobalData((prev) => {
+            const  newGlobalData = {
             ...prev,
             selectedMilestones: prev.selectedMilestones.filter((milestone) => !milestones.includes(milestone))
-        }) )
+        }
+        data = newGlobalData;
+        return newGlobalData
+    })
+        return data;
     }
 
     const clearSelectedMilestones = () => {
@@ -29,7 +46,8 @@ export const useGlobalAtom = () => {
         globalData,
         setViewMode,
         setCurrentMileStones,
-        removeCurrentMileStones,
+        addToCurrentMileStone,
+        removeCurrentSelectedMileStones,
         clearSelectedMilestones
     }
 

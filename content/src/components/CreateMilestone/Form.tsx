@@ -7,16 +7,26 @@ type props = {
     onBack : () => void
 }
 export const Form = ({onBack}:props) => {
-    const {createMilestone} = useFiltersAtom();
+    const {createMilestone, filters} = useFiltersAtom();
     const [value ,setValue] = useState('');
+    const [error, setError] = useState('');
+
+
+    const validateForm = (value:string) => {
+        const isAlreadyPresent = !!filters[value.toLowerCase()];
+        setError(isAlreadyPresent ? 'Milestone is already present' : '')
+        return !isAlreadyPresent;
+    }
 
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(!value.trim()){
             return;
         }
-        createMilestone(value);
-        onBack();
+        if(validateForm(value)){
+            createMilestone(value.toLowerCase());
+            onBack();
+        }
     }
     return(
         <Stack component="form" onSubmit={handleSubmit} sx={{
@@ -39,6 +49,8 @@ export const Form = ({onBack}:props) => {
                 onChange={(e) => setValue(e.target.value)} 
                 placeholder="Enter milestone name" 
                 variant="outlined"
+                error={!!error}
+                helperText={error}
                 required
              />
             <Button type="submit" variant="contained">Create</Button>

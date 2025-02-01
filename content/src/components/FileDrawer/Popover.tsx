@@ -56,6 +56,7 @@ export const SelectMileStonePopover = ({filePath}:props) => {
                     {currentMileStone && <Typography variant="caption" sx={{textTransform: 'capitalize'}}>{currentMileStone}</Typography>   }             
                 </Button>
             }
+            {globalData.isViewMode && currentMileStone && <Typography variant="caption" sx={{textTransform: 'capitalize'}}>{currentMileStone}</Typography> }
         </Stack>
 
         <Popover
