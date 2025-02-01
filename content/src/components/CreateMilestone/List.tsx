@@ -3,10 +3,10 @@ import { Button, Chip, IconButton, MenuItem, Stack, Typography } from "@mui/mate
 import ClearIcon from '@mui/icons-material/Clear';
 import { useRef } from "react";
 import { ListActions } from "./ListActions";
-import { useClipboard } from "@/hooks/useClipboard";
 import { useGlobalAtom } from "@/hooks/useGlobalAtom";
 import { appendStyleSheet, createStyles, getOrCreateStylesheet, getStylesheet } from "@/utils/styles";
-import { FiltersData } from "@/types/common";
+import { FiltersData, GlobalData } from "@/types/common";
+import { EmptyList } from "./EmptyList";
 
 type props = {
     onCreate: () => void;
@@ -16,9 +16,8 @@ type props = {
 
 
 export const MilestoneList = ({onCreate, onClose}:props) => {
-    const {milestones, filters,removeMilestone, generateFiltersUrl } = useFiltersAtom();
-    const {globalData, setCurrentMileStones, clearSelectedMilestones, removeCurrentMileStones} = useGlobalAtom();
-    const {copyToClipboard} = useClipboard();
+    const {milestones, filters, removeMilestone } = useFiltersAtom();
+    const {globalData, addToCurrentMileStone, clearSelectedMilestones, removeCurrentSelectedMileStones} = useGlobalAtom();
     const stylesheetRef = useRef<HTMLElement|null>(getStylesheet());
 
 
@@ -39,23 +38,21 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
         onClose();
     }
 
-    const handleMileStoneFilter = (selectedMilestone:string) => {
+    const handleMileStoneSelection = (selectedMilestone:string) => {
+        let newGlobalData:GlobalData|undefined;
+
         if(globalData.selectedMilestones.includes(selectedMilestone)){
-            removeCurrentMileStones([selectedMilestone]);
-            setTimeout(clearStyles, 100)
+            /**
+             * If clicked on the same milestone then remove it from the filters
+             */
+            newGlobalData = removeCurrentSelectedMileStones([selectedMilestone]);
+            
         }else{
-            setCurrentMileStones([selectedMilestone]);
-            setTimeout(() => {
-                setCssStyles(filters,[selectedMilestone])
-            }, 100)
-
+            newGlobalData = addToCurrentMileStone(selectedMilestone);
         }
-        onClose();
-    }
 
-    const handleCopy = (milestone:string) => {
-        const url = generateFiltersUrl([milestone]);
-        copyToClipboard(url);
+        onDataUpdate(filters, newGlobalData?.selectedMilestones);
+        onClose();
     }
 
     const handleClearStyles = () => {
@@ -64,18 +61,27 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
     }
 
 
-    const onDataUpdate = (filters:FiltersData, milestone:string) => {
-        if(globalData.selectedMilestones.length === 0){
-            return;
-        }
+    const onDataUpdate = (filters:FiltersData, milestones?:string[]) => {
         setTimeout(() => {
-            setCssStyles(filters, [milestone]);
+            /**
+             * If every milestone is deleted or the selectedmilestones become empty then clear any applied styles
+             */
+            const latestMilestones =  milestones ?? globalData.selectedMilestones
+            if(Object.keys(filters).length === 0 || latestMilestones.length === 0){
+                clearStyles();
+            }else{
+                setCssStyles(filters, latestMilestones);
+            }
         }, 100)
     }
 
 
     const handleDelete = (milestone:string) => {
-        removeMilestone(milestone, (d) => onDataUpdate(d, milestone))
+        // removing from filters mapping
+        const latestFilters = removeMilestone(milestone);
+        // removing from selected milestones
+        const latestGlobalData = removeCurrentSelectedMileStones([milestone]);
+        onDataUpdate(latestFilters ?? {}, latestGlobalData?.selectedMilestones);
     }
 
 
@@ -110,23 +116,23 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
             <Stack 
             sx={{gap: '5px', height: '175px', overflow: 'auto'}}
             >
-                {milestones.length === 0 && <Typography>Empty Milestones!!</Typography>}
+                {milestones.length === 0 && <EmptyList/>}
                 {milestones.map((milestone, idx) => {
+                    const totalSelectedFiles = Object.values(filters[milestone] ?? {}).filter(Boolean).length;
                     return (
                     <MenuItem  
                     selected={globalData.selectedMilestones.includes(milestone)} 
-                    onClick={() => handleMileStoneFilter(milestone)} 
+                    onClick={() => handleMileStoneSelection(milestone)} 
                     key={`${milestone}_${idx}`}>
                         <Stack direction="row" sx={{
                             alignItems: 'center', 
                             justifyContent: 'space-between', 
                             width: '100%'
                         }}>
-                            <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{`${milestone} (${Object.values(filters[milestone] ?? {}).length})`}</Typography>
+                            <Typography variant="body2" sx={{textTransform: 'capitalize'}}>{`${milestone} ${totalSelectedFiles > 0 ? `(${totalSelectedFiles})` : ''}`}</Typography>
                             {!isViewMode &&
                                 <ListActions 
                                 onDelete={() => handleDelete(milestone)}
-                                onCopy={() => handleCopy(milestone)}
                                 />
                             }
                         </Stack>

@@ -1,13 +1,8 @@
+import { GlobalData } from "@/types/common";
 import { atom } from "jotai";
 
-type state = {
-    isViewMode: boolean;
-    selectedMilestones: string[];
-}
 
-
-
-export const globalAtom = atom<state>({
+export const globalAtom = atom<GlobalData>({
     isViewMode: false,
     selectedMilestones: [],
 })

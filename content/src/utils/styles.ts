@@ -31,7 +31,7 @@ export const createStyles = (filters: FiltersData, selectedMilestones: string[])
 
     selectedMilestones.forEach((selectedMilestone: string) => {
         const paths = filters[selectedMilestone];
-        Object.keys(paths).filter(path =>filters[selectedMilestone][path]).forEach((path) => {
+        Object.keys((paths ?? {})).filter(path =>filters[selectedMilestone][path]).forEach((path) => {
             selectors.push(`:not([data-file-path="${path}"])`)
         })
     })

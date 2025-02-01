@@ -22,8 +22,8 @@ export const MilestonesSelect = ({
     const milestones = Object.keys(filters);
 
 
-    const setCssStyles = (filters: FiltersData, milestones:string[]) => {
-        const style = createStyles(filters, milestones);
+    const setCssStyles = (filters: FiltersData) => {
+        const style = createStyles(filters, globalData.selectedMilestones);
         const styleSheet = getOrCreateStylesheet(style);
         if(!getStylesheet()){
             appendStyleSheet(styleSheet);
@@ -34,13 +34,16 @@ export const MilestonesSelect = ({
         return !!filters[milestone]?.[filePath]
     }
 
-    const onDataUpdate = (filters:FiltersData, milestone:string) => {
-        if(globalData.selectedMilestones.length === 0){
-            return;
+    const onDataUpdate = (filters:FiltersData, newMilestone:string) => {
+        /**
+         * Checking if the previous milestone or newMilestone is part of the selected milestone
+         */
+        const isPresent = [newMilestone, currentMilestone].some((milestone) => globalData.selectedMilestones.includes(milestone))
+        if(isPresent){
+            setTimeout(() => {
+                setCssStyles(filters);
+            }, 100)
         }
-        setTimeout(() => {
-            setCssStyles(filters, [milestone]);
-        }, 100)
     }
 
     const handleSelect = (milestone: string) => {
