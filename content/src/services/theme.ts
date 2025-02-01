@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, PaletteOptions } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
     interface TypeBackground {
@@ -56,7 +56,7 @@ const commonPalette = {
 
 // Light theme palette
 const lightPalette = {
-    mode: 'light',
+    mode: 'light' as  PaletteOptions['mode'],
     primary: {
         main: '#2DA44E', // GitHub's green
         light: '#46954A',
@@ -100,7 +100,7 @@ const lightPalette = {
 
 // Dark theme palette
 const darkPalette = {
-    mode: 'dark',
+    mode: 'dark' as  PaletteOptions['mode'],
     primary: {
         main: '#3FB950', // GitHub's dark mode green
         light: '#46954A',
@@ -142,76 +142,7 @@ const darkPalette = {
     }
 };
 
-// Common component overrides
-const components = {
-    MuiIconButton: {
-        styleOverrides: {
-            root: {
-                minWidth: 0,
-                width: 'auto',
-                '&:hover': {
-                    border: 'none',
-                    color: 'inherit'
-                }
-            }
-        }
-    },
-    MuiButton: {
-        styleOverrides: {
-            root: {
-                width: 'auto',
-                textTransform: 'none',
-                fontWeight: 600,
-                variants: [
-                    {
-                        props: { variant: 'contained' },
-                        style: {
-                            '&:hover': {
-                                color: `var(--variant-containedColor)`,
-                                backgroundColor: `var(--variant-containedBg)`,
-                            }
-                        },
-                    },
-                    {
-                        props: { variant: 'outlined' },
-                        style: {
-                            '&:hover': {
-                                border: '1px solid currentColor'
-                            },
-                        },
-                    },
-                ],
-                '&:hover': {
-                    border: 'none'
-                },
-                minWidth: 0,
-            }
-        }
-    },
-    MuiTooltip: {
-        styleOverrides: {
-            tooltip: ({ theme }) => ({
-                '&': {
-                    backgroundColor: theme.palette.background.dark,
-                    color: theme.palette.text.dark,
-                    ...theme.typography.body2,
-                    padding: '8px',
-                }
-            })
-        }
-    },
-    // Dark mode specific overrides
-    MuiPaper: {
-        styleOverrides: {
-            root: ({ theme }) => ({
-                backgroundImage: 'none', // Remove default paper elevation in dark mode
-                ...(theme.palette.mode === 'dark' && {
-                    boxShadow: '0 0 0 1px #30363D', // GitHub-style border in dark mode
-                })
-            })
-        }
-    }
-};
+
 
 // Common typography settings
 const typography = {
@@ -247,12 +178,148 @@ export const lightTheme = createTheme({
     ...commonPalette,
     palette: lightPalette,
     typography,
-    components,
+    components:{
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    minWidth: 0,
+                    width: 'auto',
+                    '&:hover': {
+                        border: 'none',
+                        color: 'inherit'
+                    }
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    width: 'auto',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    variants: [
+                        {
+                            props: { variant: 'contained' },
+                            style: {
+                                '&:hover': {
+                                    color: `var(--variant-containedColor)`,
+                                    backgroundColor: `var(--variant-containedBg)`,
+                                }
+                            },
+                        },
+                        {
+                            props: { variant: 'outlined' },
+                            style: {
+                                '&:hover': {
+                                    border: '1px solid currentColor'
+                                },
+                            },
+                        },
+                    ],
+                    '&:hover': {
+                        border: 'none'
+                    },
+                    minWidth: 0,
+                }
+            }
+        },
+        MuiTooltip: {
+            styleOverrides: {
+                tooltip: ({ theme }) => ({
+                    '&': {
+                        backgroundColor: theme.palette.background.dark,
+                        color: theme.palette.text.dark,
+                        ...theme.typography.body2,
+                        padding: '8px',
+                    }
+                })
+            }
+        },
+        // Dark mode specific overrides
+        MuiPaper: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    backgroundImage: 'none', // Remove default paper elevation in dark mode
+                    ...(theme.palette.mode === 'dark' && {
+                        boxShadow: '0 0 0 1px #30363D', // GitHub-style border in dark mode
+                    })
+                })
+            }
+        }
+    },
 });
 
 export const darkTheme = createTheme({
     ...commonPalette,
     palette: darkPalette,
     typography,
-    components,
+    components:{
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    minWidth: 0,
+                    width: 'auto',
+                    '&:hover': {
+                        border: 'none',
+                        color: 'inherit'
+                    }
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    width: 'auto',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    variants: [
+                        {
+                            props: { variant: 'contained' },
+                            style: {
+                                '&:hover': {
+                                    color: `var(--variant-containedColor)`,
+                                    backgroundColor: `var(--variant-containedBg)`,
+                                }
+                            },
+                        },
+                        {
+                            props: { variant: 'outlined' },
+                            style: {
+                                '&:hover': {
+                                    border: '1px solid currentColor'
+                                },
+                            },
+                        },
+                    ],
+                    '&:hover': {
+                        border: 'none'
+                    },
+                    minWidth: 0,
+                }
+            }
+        },
+        MuiTooltip: {
+            styleOverrides: {
+                tooltip: ({ theme }) => ({
+                    '&': {
+                        backgroundColor: theme.palette.background.dark,
+                        color: theme.palette.text.dark,
+                        ...theme.typography.body2,
+                        padding: '8px',
+                    }
+                })
+            }
+        },
+        // Dark mode specific overrides
+        MuiPaper: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    backgroundImage: 'none', // Remove default paper elevation in dark mode
+                    ...(theme.palette.mode === 'dark' && {
+                        boxShadow: '0 0 0 1px #30363D', // GitHub-style border in dark mode
+                    })
+                })
+            }
+        }
+    },
 });
