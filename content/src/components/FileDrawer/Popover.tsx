@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Popover, Stack, Typography } from "@mui/material";
+import { Box, Button, Popover, Stack, Tooltip, Typography } from "@mui/material";
 import { useState } from "react"
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { MilestonesSelect } from "../Inputs/MilestonesSelect";
@@ -40,21 +40,23 @@ export const SelectMileStonePopover = ({filePath}:props) => {
             minHeight: '31px'
         }}>
            {!globalData.isViewMode &&
-                <Button 
-                onClick={handleClick}
-                disabled={Object.keys(filters).length === 0}
-                variant="text" 
-                sx={{
-                    color: 'currentcolor'
-                }}
-                startIcon={ 
-                    <LocalOfferIcon sx={{
-                        width: '15px',
-                        height: '15px',
-                    }}/>
-                }>
-                    {currentMileStone && <Typography variant="caption" sx={{textTransform: 'capitalize'}}>{currentMileStone}</Typography>   }             
-                </Button>
+                <Tooltip title="Select milestone">
+                    <Button 
+                    onClick={handleClick}
+                    disabled={Object.keys(filters).length === 0}
+                    variant="text" 
+                    sx={{
+                        color: 'currentcolor'
+                    }}
+                    startIcon={ 
+                        <LocalOfferIcon sx={{
+                            width: '15px',
+                            height: '15px',
+                        }}/>
+                    }>
+                        {currentMileStone && <Typography variant="caption" sx={{textTransform: 'capitalize'}}>{currentMileStone}</Typography>   }             
+                    </Button>
+                </Tooltip>
             }
             {globalData.isViewMode && currentMileStone && <Typography variant="caption" sx={{textTransform: 'capitalize'}}>{currentMileStone}</Typography> }
         </Stack>

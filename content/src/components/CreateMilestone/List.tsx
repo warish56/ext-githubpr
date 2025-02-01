@@ -3,7 +3,6 @@ import { Button, Chip, IconButton, MenuItem, Stack, Typography } from "@mui/mate
 import ClearIcon from '@mui/icons-material/Clear';
 import { useRef } from "react";
 import { ListActions } from "./ListActions";
-import { useClipboard } from "@/hooks/useClipboard";
 import { useGlobalAtom } from "@/hooks/useGlobalAtom";
 import { appendStyleSheet, createStyles, getOrCreateStylesheet, getStylesheet } from "@/utils/styles";
 import { FiltersData, GlobalData } from "@/types/common";
@@ -17,9 +16,8 @@ type props = {
 
 
 export const MilestoneList = ({onCreate, onClose}:props) => {
-    const {milestones, filters, removeMilestone, generateFiltersUrl } = useFiltersAtom();
+    const {milestones, filters, removeMilestone } = useFiltersAtom();
     const {globalData, addToCurrentMileStone, clearSelectedMilestones, removeCurrentSelectedMileStones} = useGlobalAtom();
-    const {copyToClipboard} = useClipboard();
     const stylesheetRef = useRef<HTMLElement|null>(getStylesheet());
 
 
@@ -55,11 +53,6 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
 
         onDataUpdate(filters, newGlobalData?.selectedMilestones);
         onClose();
-    }
-
-    const handleCopy = (milestone:string) => {
-        const url = generateFiltersUrl([milestone]);
-        copyToClipboard(url);
     }
 
     const handleClearStyles = () => {
@@ -140,7 +133,6 @@ export const MilestoneList = ({onCreate, onClose}:props) => {
                             {!isViewMode &&
                                 <ListActions 
                                 onDelete={() => handleDelete(milestone)}
-                                onCopy={() => handleCopy(milestone)}
                                 />
                             }
                         </Stack>
