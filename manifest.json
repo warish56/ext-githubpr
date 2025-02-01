@@ -7,14 +7,14 @@
     "storage",
     "activeTab"
   ],
-  "key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMSkIIuMAWgYM8jtm5ZrmoZf2FswVPUH2gMCbnKUoTz77gYzV2y4veARIJR241hst/df6d2qsSDXbTv7+x7MJNt/HjwAmKrrbXPvGkRE+axtkeDEvzF9oA0NlI4qGLSaFwAnUjkbjP+CO1LdU0NQf4VqUNdZbTFl8TSkHAhMgLJQ/ZEcs8zIFDQYCIpHXWDo1I1PkAUMr+rgCjvxZRSSbNc8XREvJLo5xoilzA6H0v5M5db+csRPkuO5KzVulBta0B9JoPZrDoLVFjAzXj125AV1uL8l+r78kAi8kS0ZAUYZMrFYXBH/Jcw9Ogmo19z6LE+wMc4wIGBeiUFjKfTR0wIDAQAB",
   "icons": {
     "16": "assets/logo.png",
     "48": "assets/logo.png",
     "128": "assets/logo.png"
   },
 
-
+ "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqvgPV7EfoqYKhInmRxS/uSx0LDdHeTILob6plEhB25uAe3odEgmM+6zmDDpV8JEE7zsvW7VOWjVBQorjA66DO3oj3iLMoDCYJaPglcIhAiLktDgM2uuA9K3rgKmcbot/LLtRS+GqO0MzsCjA8ug/sS1nv7I5xYbNgVXHYMdC0kgmeK9AkiTZltmXE9LVIHhN70zxV7ZNQbcdQXTMzOIaoE4NsCFSRqzXecd+GjPEMqlANfzdElEV1mYei4uHayJPduV6UR+gDOVLydsv9xsA9Zw8oYJPsKWiCpYXVaKdDLBhLt05xX4ICH8ooH/2x78eJD2txN12W93Lh1M019KCkwIDAQAB",
+ 
   "action":{},
   "background": {
     "service_worker": "background/main.js",
