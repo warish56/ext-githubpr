@@ -1,13 +1,12 @@
 'use client'
 
 import React from 'react';
-import { Box, Typography, Container, Grid, Avatar, keyframes, useTheme, Link } from '@mui/material';
+import { Box, Typography, Container, Grid, Avatar, keyframes, useTheme } from '@mui/material';
 import {
     Code as CodeIcon,
     Security as SecurityIcon,
     Group as GroupIcon,
     ThumbUp as ThumbUpIcon,
-    Email as EmailIcon,
 } from '@mui/icons-material';
 
 // Animation keyframes

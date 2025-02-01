@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid, Container, useTheme, Link } from '@mui/material';
+import { Box, Typography, Grid, Container, Link } from '@mui/material';
 import { Email, Twitter, LinkedIn } from '@mui/icons-material';
 import { BrandLogo } from '@/components/BrandLogo';
 import NextLink from 'next/link';
