@@ -36,18 +36,27 @@ const Footer = () => {
             color: 'text.primary'
         }}>
             <Container maxWidth="lg">
-                <Grid container spacing={6} sx={{
-                    alignItems: 'flex-start'
+                <Grid container columnSpacing={2}  rowSpacing={6} sx={{
+                    justifyContent: 'center',
+                    justifyItems: 'center'
                 }}>
                     {/* Brand Logo & Description */}
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} lg={4} sx={{
+                        justifyItems: 'center',
+                        '& a': {
+                            display: 'block',
+                            width: `min(100%, 400px)`,
+                            height: '100%'
+                        }
+                        
+                    }}>
                         <NextLink href="/">
                             <BrandLogo />
                         </NextLink>
                     </Grid>
 
                     {/* About Us */}
-                    <Grid item xs={6} md={3} lg={2}>
+                    <Grid item xs={12} md={3} lg={2}>
                         <Typography variant="h3" sx={{ 
                             fontSize: '1.25rem',
                             fontWeight: 600,
@@ -63,7 +72,7 @@ const Footer = () => {
                     </Grid>
 
                     {/* Privacy Policy */}
-                    <Grid item xs={6} md={3} lg={2}>
+                    <Grid item xs={12} md={3} lg={2}>
                         <Typography variant="h3" sx={{ 
                             fontSize: '1.25rem',
                             fontWeight: 600,
@@ -82,7 +91,7 @@ const Footer = () => {
                     </Grid>
 
                     {/* Contact Us */}
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} md={3} lg={3}>
                         <Typography variant="h3" sx={{ 
                             fontSize: '1.25rem',
                             fontWeight: 600,

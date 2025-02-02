@@ -67,7 +67,7 @@ const WhatUsersAreSayingSection = () => {
                 </Typography>
 
                 {/* Testimonials Grid */}
-                <Grid container spacing={12}>
+                <Grid container rowSpacing={12} columnSpacing={2}>
                     {testimonials.map((testimonial, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                             <Box

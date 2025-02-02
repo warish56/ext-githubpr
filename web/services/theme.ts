@@ -147,15 +147,15 @@ const darkPalette = {
 const typography = {
     fontFamily: 'Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif',
     h1: {
-        fontSize: '20px',
+        fontSize: '3rem',
         fontWeight: 600,
     },
     h2: {
-        fontSize: '16px',
+        fontSize: '2.5rem',
         fontWeight: 600,
     },
     h3: {
-        fontSize: '14px',
+        fontSize: '1.8rem',
         fontWeight: 600,
     },
     body1: {
@@ -172,11 +172,22 @@ const typography = {
     },
 };
 
+const breakpoints = {
+    values: {
+        xs: 0,
+        sm: 400,
+        md: 700,
+        lg: 1200,
+        xl: 1536,
+    }
+}
+
 // Create themes
 export const lightTheme = createTheme({
     ...commonPalette,
     palette: lightPalette,
     typography,
+    breakpoints,
     components:{
         MuiIconButton: {
             styleOverrides: {
@@ -209,8 +220,9 @@ export const lightTheme = createTheme({
                         {
                             props: { variant: 'outlined' },
                             style: {
+                                boxSizing: 'border-box',
                                 '&:hover': {
-                                    border: '1px solid currentColor'
+                                    outline: '1px solid currentColor'
                                 },
                             },
                         },
@@ -252,6 +264,7 @@ export const darkTheme = createTheme({
     ...commonPalette,
     palette: darkPalette,
     typography,
+    breakpoints,
     components:{
         MuiIconButton: {
             styleOverrides: {
