@@ -60,7 +60,10 @@ const AboutUsPage = () => {
                 <Box sx={{ 
                     bgcolor: 'background.paper',
                     borderRadius: '16px',
-                    p: 6,
+                    p: {
+                        xs: 2,
+                        sm: 6,
+                    },
                     mb: 8,
                     boxShadow: theme.shadows[4],
                     animation: `${fadeIn} 1s ease-out 0.4s`,
@@ -126,7 +129,7 @@ const AboutUsPage = () => {
                 }}>
                     Our Values
                 </Typography>
-                <Grid container spacing={6} sx={{ mb: 12 }}>
+                <Grid container rowSpacing={12} columnSpacing={2} sx={{ mb: 12 }}>
                     {[
                         {
                             icon: <SecurityIcon sx={{ fontSize: 40, color: 'primary.main' }} />,
