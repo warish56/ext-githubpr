@@ -16,7 +16,6 @@ const fadeIn = keyframes`
 
 const HowItWorksSection = () => {
     const theme = useTheme();
-
     const steps = [
         {
             icon: <FilterIcon sx={{ fontSize: 40, color: 'primary.main' }} />,
@@ -48,7 +47,6 @@ const HowItWorksSection = () => {
                     textAlign: 'center',
                     mb: 6,
                     fontWeight: 700,
-                    fontSize: '2.5rem',
                     [theme.breakpoints.up('md')]: {
                         fontSize: '3rem',
                     }
@@ -111,7 +109,7 @@ const HowItWorksSection = () => {
                                         textAlign: index % 2 === 0 ? 'right' : 'left',
                                     },
                                     [theme.breakpoints.down('sm')]: {
-                                        width: '100%',
+                                        width: 'auto',
                                         textAlign: 'center',
                                     },
                                 }}
@@ -124,7 +122,10 @@ const HowItWorksSection = () => {
                                     <Typography variant="h3" sx={{ 
                                         fontWeight: 600,
                                         mb: 2,
-                                        fontSize: '1.5rem',
+                                        fontSize: {
+                                            xs: '1.5rem',
+                                            sm: 'inherit'
+                                        },
                                         order: index % 2 === 0 ? 0 : 1
                                     }}>
                                         {step.title}

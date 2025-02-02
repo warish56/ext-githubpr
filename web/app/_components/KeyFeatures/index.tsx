@@ -81,7 +81,7 @@ const KeyFeaturesSection = () => {
                 </Typography>
 
                 {/* Features Grid */}
-                <Grid container spacing={12} sx={{}}>
+                <Grid container rowSpacing={12} columnSpacing={2} sx={{}}>
                     {features.map((feature, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                             <Box

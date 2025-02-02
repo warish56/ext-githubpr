@@ -4,6 +4,11 @@ import React from 'react';
 import { Box, Typography, Button, Container, Grid, useTheme, keyframes } from '@mui/material';
 import { Code as CodeIcon, ArrowForward as ArrowIcon } from '@mui/icons-material';
 import { BrandLogo } from '@/components/BrandLogo';
+import Link from 'next/link';
+import { DEMO_URL, EXTENSION_URL } from '@/constants/common';
+
+
+
 
 // Animation keyframes
 const float = keyframes`
@@ -67,36 +72,62 @@ const HeroSection = () => {
                             </Typography>
 
                             <Box sx={{ display: 'flex', gap: 3 }}>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    endIcon={<ArrowIcon />}
-                                    sx={{
-                                        px: 4,
-                                        py: 1.5,
-                                        fontSize: '1.1rem',
-                                        borderRadius: '8px',
-                                        boxShadow: theme.shadows[4],
-                                        '&:hover': {
-                                            boxShadow: theme.shadows[8]
-                                        }
-                                    }}
+                                <Link 
+                                target="_blank"
+                                referrerPolicy="no-referrer"
+                                href={EXTENSION_URL}
                                 >
-                                    Get Started
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    size="large"
-                                    sx={{
-                                        px: 4,
-                                        py: 1.5,
-                                        fontSize: '1.1rem',
-                                        borderWidth: '2px',
-                                        borderRadius: '8px'
-                                    }}
-                                >
-                                    View Demo
-                                </Button>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        endIcon={<ArrowIcon />}
+                                        sx={{
+                                            px: {
+                                                xs: 3,
+                                                lg: 4
+                                            },
+                                            py: {
+                                                xs: 1,
+                                                lg: 1.5
+                                            },
+                                            fontSize: {
+                                                xs: '0.8rem',
+                                                sm: '1.1rem',
+                                            },
+                                            borderRadius: '8px',
+                                            boxShadow: theme.shadows[4],
+                                            '&:hover': {
+                                                boxShadow: theme.shadows[8]
+                                            }
+                                        }}
+                                    >
+                                        Get Started
+                                    </Button>
+                                </Link>
+                                <Link href={DEMO_URL} target='_blank' referrerPolicy="no-referrer">
+                                    <Button
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{
+                                            px: {
+                                                xs: 3,
+                                                lg: 4
+                                            },
+                                            py: {
+                                                xs: 1,
+                                                lg: 1.5
+                                            },
+                                            fontSize: {
+                                                xs: '0.8rem',
+                                                sm: '1.1rem'
+                                            },
+                                            borderWidth: '2px',
+                                            borderRadius: '8px'
+                                        }}
+                                    >
+                                        View Demo
+                                    </Button>
+                                </Link>
                             </Box>
                         </Box>
                     </Grid>
@@ -125,7 +156,7 @@ const HeroSection = () => {
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
-                                width: '400px',
+                                width: 'min(90%, 400px)',
                                 height: '400px',
                                 bgcolor: theme.palette.mode === 'dark' ? 'background.paper' : 'white',
                                 borderRadius: '16px',
@@ -133,7 +164,10 @@ const HeroSection = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 gap: 2,
-                                p:4
+                                p:{
+                                xs: 2,
+                                sm: 4
+                                }
                             }}>
 
 
